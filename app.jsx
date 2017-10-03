@@ -77,7 +77,7 @@ class Model {
    constructor () {
       this.questions = [];
       this.count = 0;
-      this.inputValue = null;
+      this.triviaQuestions = character;
       this.render = undefined;
    }
   
@@ -95,7 +95,9 @@ class Model {
          questionTrivia: question.question,
          options: question.answers,
          answer: question.correctAnswer,
-         completed: false
+         option1: question.answer1,
+         option2: question.answer2,
+         option3: question.answer3
       });
       this.count;
       this.inform();
@@ -107,57 +109,81 @@ class Model {
 }
 
 const App = ({ title, model }) => {
-   const items = model.question.map((todo, index) => {
-      return (
-        <div>
-            <h2 ></h2>
-        </div>
-   )})
-};
+    const items = model.triviaQuestions.map((question, index) => {
+        return (
+            <li key={index}>
+                <p value={question.question}>{question.question}</p>
+                <button className='btn '
+                    onClick={ e=>
+                        model.nextQuestion(index,{
+                            image: question.url,
+                            questionTrivia: question.question,
+                            options: question.answers,
+                            answer: question.correctAnswer,
+                            option1: question.answer1,
+                            option2: question.answer2,
+                            option3: question.answer3
+                        })}
+                    value = {question.answer1}
+                >{question.answer1}</button>
+                <button className='btn '
+                    onClick={ e=>
+                        model.nextQuestion(index,{
+                            image: question.url,
+                            questionTrivia: question.question,
+                            options: question.answers,
+                            answer: question.correctAnswer,
+                            option1: question.answer1,
+                            option2: question.answer2,
+                            option3: question.answer3
+                        })}
+                    value = {question.answer2}
+                >{question.answer2}</button>
+                <button className='btn '
+                    onClick={ e=>
+                        model.nextQuestion(index,{
+                            image: question.url,
+                            questionTrivia: question.question,
+                            options: question.answers,
+                            answer: question.correctAnswer,
+                            option1: question.answer1,
+                            option2: question.answer2,
+                            option3: question.answer3
+                        })}
+                    value = {question.answer3}
+                >{question.answer3}</button>
+            </li>
+        )
+    });
 
-//**************************** */
-const App = ({ title, model }) => {
-   const items = model.todos.map((todo, index) => {
-      return (
-         <li key={todo.id}>
-            <input
-               type="text"
-               value={todo.text}
-               onChange={e =>
-                  model.updateTodo(index, {
-                     id: todo.id,
-                     text: e.target.value,
-                     completed: todo.completed
-                  })}
-            />
-            <button onClick={() => model.removeTodo(todo)}> delete item</button>
-         </li>
-      );
-   });
-   return (
+    
+    const img = model.triviaQuestions.map((question, index) =>{
+        return(
+            <div key={index}>
+                <img src= {question.url} />
+            </div>
+        )
+    });
+
+    return(
       <div>
-         <h1> {title} </h1>
-         <form
-            onSubmit={e => {
-               e.preventDefault();
-               model.addTodo(model.inputValue);
-            }}
-         >
-            <input onChange={e => (model.inputValue = e.target.value)} />
-            <button type="submit">Add Item</button>
-         </form>
-         <ol> {items} </ol>
-      </div>
-   );
+          <h2> {title} </h2>
+            <div> 
+                {img} 
+                 <ol> {items} </ol>
+            </div>
+      </div>  
+    );
 };
 
-let model = new Model();
+
+let model = new Model(character);
 let counter = 1;
 let render = () => {
    console.log('render times: ', counter++);
    ReactDOM.render(
-      <App title="TodoApp" model={model} />,
-      document.getElementById('container')
+      <App title="TriviaApp" model={model} />,
+      document.getElementById('root')
    );
 };
 
